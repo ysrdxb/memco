@@ -1,0 +1,281 @@
+@extends('inventory.layout')
+@section('title', 'Units')
+@section('content')
+
+<div class="container-fluid">
+    <div class="page-header">
+        <div class="row align-items-end">
+            <div class="col-lg-4">
+                <div class="page-header-title">
+                    <i class="ik ik-list bg-secondary"></i>
+                    <div class="d-inline">
+                        <h5>{{ __('Units')}}</h5>
+                        <span>Add, remove or edit product units</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8 text-right">
+                <a href="#categoryAdd" data-toggle="modal" data-target="#categoryAdd" class="btn btn-sm btn-danger"><i class="ik ik-plus"></i> Add</a>
+                @include('include.backButtons') 
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <!-- start message area-->
+        @include('include.message')
+        <!-- end message area-->
+        <div class="col-md-12">
+            <div class="row">
+                @include('include.message')
+                <div class="col-md-12">
+                    <div class="card p-3">
+                        <div class="card-header"><h3>{{ __('Units')}}</h3></div>
+                        <div class="card-body">
+                            <table id="product_table" class="table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Name</th>
+                                        <th>Short Name</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>		
+            </div>           
+        </div>
+    </div>
+</div>
+
+<!-- Edit modal -->
+<div class="modal fade" id="editUnitModal" tabindex="-1" role="dialog" aria-labelledby="editUnitModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editUnitModalLabel">Edit Unit</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="updateForm">
+                    <!-- Include input fields for editing unit details -->
+                    <div class="form-group">
+                        <label for="editName">Unit Name</label>
+                        <input type="text" class="form-control" id="editName" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editShortName">Unit Code</label>
+                        <input type="text" class="form-control" id="editCode" name="short_name" required>
+                    </div>
+                    <!-- Add other input fields for editing -->
+                    <input type="hidden" id="editUnitId" name="id">
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- category add modal-->
+<div class="modal fade edit-layout-modal pr-0 " id="categoryAdd" tabindex="-1" role="dialog" aria-labelledby="categoryAddLabel" aria-hidden="true">
+    <div class="modal-dialog w-300" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="categoryAddLabel">{{ __('Add Unit')}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form id="submitForm">
+                    <div class="form-group">
+                        <label class="d-block">Unit Name</label>
+                        <input type="text" name="name" class="form-control" placeholder="Unit Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="d-block">Unit Code</label>
+                        <input type="text" name="short_name" class="form-control" placeholder="Unit Code" required>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary" type="submit" name="Save">Save <i class="ik ik-save"></i></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@endsection
+@push('script')
+<script src="{{ asset('plugins/DataTables/datatables.min.js') }}"></script>
+<script>
+	
+    $(document).ready(function() {
+        var searchable = [];
+        var selectable = []; 
+        var dTable = $('#product_table').DataTable({
+    
+            order: [],
+            lengthMenu: [[20, 40, 80, 150, -1], [20, 40, 80, 150, "All"]],
+            processing: true,
+            responsive: false,
+            serverSide: true,
+            processing: true,
+            language: {
+              processing: '<i class="ace-icon fa fa-spinner fa-spin orange bigger-500" style="font-size:60px;margin-top:50px;"></i>'
+            },
+            scroller: {
+                loadingIndicator: false
+            },
+            scroller: {
+                loadingIndicator: false
+            },
+            pagingType: "full_numbers",
+            dom: "<'row'<'col-sm-2'l><'col-sm-7 text-center'B><'col-sm-3'f>>tipr",
+            ajax: {
+                url: '{{ route("units.getList") }}',
+                type: "get"
+            },
+            columns: [
+                { data: 'id', orderable: false, searchable: true },
+                { data: 'name', name: 'name' },
+                { data: 'short_name', name: 'short_name' },
+                { data: 'action', name: 'action', orderable: false, searchable: false },
+            ],
+            buttons: [
+                {
+                    extend: 'copy',
+                    className: 'btn-sm btn-info',
+                    title: 'U.O.M',
+                    header: false,
+                    footer: true,
+                    exportOptions: {
+                        // columns: ':visible'
+                    }
+                },
+                {
+                    extend: 'csv',
+                    className: 'btn-sm btn-success',
+                    title: 'U.O.M',
+                    header: false,
+                    footer: true,
+                    exportOptions: {
+                        // columns: ':visible'
+                    }
+                },
+                {
+                    extend: 'excel',
+                    className: 'btn-sm btn-warning',
+                    title: 'U.O.M',
+                    header: false,
+                    footer: true,
+                    exportOptions: {
+                        // columns: ':visible',
+                    }
+                },
+                {
+                    extend: 'pdf',
+                    className: 'btn-sm btn-primary',
+                    title: 'U.O.M',
+                    pageSize: 'A2',
+                    header: false,
+                    footer: true,
+                    exportOptions: {
+                        // columns: ':visible'
+                    }
+                },
+                {
+                    extend: 'print',
+                    className: 'btn-sm btn-default',
+                    title: 'U.O.M',
+                    // orientation:'landscape',
+                    pageSize: 'A2',
+                    header: true,
+                    footer: false,
+                    orientation: 'landscape',
+                    exportOptions: {
+                        // columns: ':visible',
+                        stripHtml: false
+                    }
+                }
+            ],
+            initComplete: function () {
+                var api =  this.api();
+                api.columns(searchable).every(function () {
+                    var column = this;
+                    var input = document.createElement("input");
+                    input.setAttribute('placeholder', $(column.header()).text());
+                    input.setAttribute('style', 'width: 140px; height:25px; border:1px solid whitesmoke;');
+    
+                    $(input).appendTo($(column.header()).empty())
+                    .on('keyup', function () {
+                        column.search($(this).val(), false, false, true).draw();
+                    });
+    
+                    $('input', this.column(column).header()).on('click', function(e) {
+                        e.stopPropagation();
+                    });
+                });
+    
+                api.columns(selectable).every( function (i, x) {
+                    var column = this;
+    
+                    var select = $('<select style="width: 140px; height:25px; border:1px solid whitesmoke; font-size: 12px; font-weight:bold;"><option value="">'+$(column.header()).text()+'</option></select>')
+                        .appendTo($(column.header()).empty())
+                        .on('change', function(e){
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+                            column.search(val ? '^'+val+'$' : '', true, false ).draw();
+                            e.stopPropagation();
+                        });
+    
+                    $.each(dropdownList[i], function(j, v) {
+                        select.append('<option value="'+v+'">'+v+'</option>')
+                    });
+                });
+            }  
+        });          
+	});
+
+  $(document).ready(function() {
+    handleFormSubmit('#submitForm', '{{ route('units.store') }}','POST', function(response) {
+      //console.log(response);
+    }, function(error) {
+      console.error(error);
+    });
+  });
+$(document).ready(function() {
+    $('.editBtn').click(function() {
+        var id = $(this).data('id');
+        var name = $(this).data('name');
+        var code = $(this).data('code');
+        $('#editUnitId').val(id);
+        $('#editName').val(name);
+        $('#editCode').val(code);
+
+        var url = '{{ route("units.update", ":id") }}';
+        url = url.replace(':id', id);
+        
+        handleFormSubmit('#updateForm', url, 'PUT', function(response) {
+            // Handle success response
+            console.log(response);
+        }, function(error) {
+            // Handle error response
+            console.error(error);
+        });
+    });
+});
+  $(document).ready(function() {
+    handleDeleteAction('.deleteBtn', '/products/units/delete', function(response) {
+      console.log(response);
+    }, function(error) {
+      //console.error(error);
+    });    
+  });
+</script>
+
+@endpush

@@ -1,0 +1,55 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Purchase extends Model
+{
+    use HasFactory;
+    
+    protected $guarded = [];
+
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class);
+    }
+
+    public function warehouse()
+    {
+        return $this->belongsTo(Warehouse::class);
+    }
+
+    public function purchaseDetail()
+    {
+        return $this->hasMany(PurchaseDetail::class);
+    }
+
+    public function materialRequest()
+    {
+        return $this->belongsTo(MaterialRequest::class);
+    }
+
+    public function deliveryOrders()
+    {
+        return $this->hasMany(MaterialDelivery::class);
+    }
+    public function deliveryOrder()
+    {
+        return $this->belongsTo(MaterialDelivery::class);
+    }    
+
+    public function materialRequestDetails()
+    {
+        return $this->hasManyThrough(
+            MaterialRequestDetail::class,
+            MaterialRequest::class,
+            'id', // Foreign key on MaterialRequest table
+            'material_request_id', // Foreign key on MaterialRequestDetail table
+            'material_request_id', // Local key on Purchase table
+            'id' // Local key on MaterialRequest table
+        );
+    }    
+
+}

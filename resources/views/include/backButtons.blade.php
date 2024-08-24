@@ -1,0 +1,2 @@
+<a href="javascript:;" onclick="goBackOrHome()" class="btn btn-outline-dark btn-rounded border ml-4" style="border:1px solid !important"><span class="fas fa-arrow-left"></span> Back</a>
+<a href="{{ route('dashboard') }}" class="btn btn-outline-dark btn-rounded ml-4"><span class="ik ik-home"></span> Dashboard</a>
