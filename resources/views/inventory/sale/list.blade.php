@@ -2,34 +2,22 @@
 @section('title', 'Sales')
 @section('content')
 <div class="container-fluid">
-	<div class="page-header">
-		<div class="row align-items-end">
-			<div class="col-lg-8">
-				<div class="page-header-title">
-					<i class="ik ik-shopping-cart bg-green"></i>
-					<div class="d-inline">
-						<h5>Sales</h5>
-						<span>View, delete and update Sales</span>
-					</div>
-				</div>
-			</div>
-			<div class="col-lg-4">
-				<nav class="breadcrumb-container" aria-label="breadcrumb">
-					<ol class="breadcrumb">
-						<li class="breadcrumb-item">
-							<a href="/dashboard"><i class="ik ik-home"></i></a>
-						</li>
-						<li class="breadcrumb-item">
-							<a href="#">Sales</a>
-						</li>
-					</ol>
-				</nav>
-			</div>
-		</div>
-	</div>
+	<!-- Header Banner -->
+    <div class="header-dashboard-clean">
+        <div class="d-flex align-items-center mb-3 mb-md-0">
+            <div class="header-icon-box-clean">
+                <i class="ik ik-shopping-cart"></i>
+            </div>
+            <div>
+                <h3 class="header-title-text-clean">Sales</h3>
+                <p class="header-sub-text-clean">View, delete and update Sales</p>
+            </div>
+        </div>
+        <div class="d-flex align-items-center" style="gap: 12px;"></div>
+    </div>
 	<div class="row">
 		<div class="col-md-12">
-			<div class="card">
+			<div class="table-card">
 				<div class="card-header row">
 					<div class="col col-sm-2">
 						<a href="/sales/create" class="btn btn-primary btn-rounded">Add Sale</a>
@@ -104,7 +92,7 @@
 					</div>
 				</div>
 				<div class="card-body">
-					<table id="advanced_table" class="table">
+					<table id="advanced_table" class="table table-custom">
 						<thead>
 							<tr>
 								<th class="nosort" width="10">

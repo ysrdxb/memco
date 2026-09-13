@@ -73,7 +73,23 @@ Route::group(['middleware' => 'auth'], function(){
 			Route::get('/user/{id}', [UserController::class,'edit']);
 			Route::post('/user/update', [UserController::class,'update'])->middleware('can:user_update');
 			Route::get('/user/delete/{id}', [UserController::class,'delete'])->middleware('can:user_delete');
+
+            // Settings
+            Route::get('/settings', [\App\Http\Controllers\SettingController::class, 'index'])->name('settings.index');
+            Route::post('/settings', [\App\Http\Controllers\SettingController::class, 'update'])->name('settings.update');
 		});
+
+        // AI Chat (Available to all authenticated users)
+        Route::get('/ai-chat', [\App\Http\Controllers\AIChatController::class, 'index'])->name('ai.chat');
+        Route::post('/ai-chat/message', [\App\Http\Controllers\AIChatController::class, 'sendMessage'])->name('ai.message');
+        Route::post('/ai-chat/refine-speech', [\App\Http\Controllers\AIChatController::class, 'refineSpeech'])->name('ai.refine-speech');
+        
+        // Debug
+        Route::get('/ai-test', function() {
+            $request = new \Illuminate\Http\Request();
+            $request->replace(['message' => 'hello']);
+            return app(\App\Http\Controllers\AIChatController::class)->sendMessage($request);
+        });
 
 		//only those have manage_role permission will get access
 		Route::group(['middleware' => 'can:manage_role|manage_user'], function(){

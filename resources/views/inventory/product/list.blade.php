@@ -3,66 +3,33 @@
 @section('content')
     @push('head')
         <link rel="stylesheet" href="{{ asset('plugins/DataTables/datatables.min.css') }}">
-        <style>
-            /* HTML: <div class="loader"></div> */
-            .loader {
-              margin:auto;
-              width: 32px;
-              aspect-ratio: 1;
-              display: grid;
-              border: 4px solid #0000;
-              border-radius: 50%;
-              border-color: #226bc5 #0000;
-              animation: l16 1s infinite linear;
-            }
-            .loader::before,
-            .loader::after {    
-              content: "";
-              grid-area: 1/1;
-              margin: 2px;
-              border: inherit;
-              border-radius: 50%;
-            }
-            .loader::before {
-              border-color: #f03355 #0000;
-              animation: inherit; 
-              animation-duration: .5s;
-              animation-direction: reverse;
-            }
-            .loader::after {
-              margin: 8px;
-            }
-            @keyframes l16 { 
-              100%{transform: rotate(1turn)}
-            }         
-        </style>
+        
     @endpush
 <div class="container-fluid">
-	<div class="page-header">
-		<div class="row align-items-end">
-			<div class="col-lg-4">
-				<div class="page-header-title">
-					<i class="ik ik-list bg-secondary"></i>
-					<div class="d-inline">
-						<h5>{{ __('Products')}}</h5>
-						<span>{{ __('List of products')}}</span>
-					</div>
-				</div>
-			</div>
-            <div class="col-lg-8 text-right">
-                <button type="button" class="btn btn-sm btn-secondary mr-4" data-toggle="modal" data-target="#importModal"><i class="ik ik-upload"></i>Import</button>
-                <a href="{{ route('products.create') }}" class="btn btn-sm btn-danger"><i class="ik ik-plus"></i>Add</a>
-                @include('include.backButtons')
+	<!-- Header Banner -->
+    <div class="header-dashboard-clean">
+        <div class="d-flex align-items-center mb-3 mb-md-0">
+            <div class="header-icon-box-clean">
+                <i class="ik ik-list"></i>
             </div>
-		</div>
-	</div>
+            <div>
+                <h3 class="header-title-text-clean">{{ __('Products')}}</h3>
+                <p class="header-sub-text-clean">{{ __('List of products')}}</p>
+            </div>
+        </div>
+        <div class="d-flex align-items-center" style="gap: 12px;">
+            <button type="button" class="btn btn-sm btn-secondary-memco mr-4" data-toggle="modal" data-target="#importModal"><i class="ik ik-upload"></i>Import</button>
+                <a href="{{ route('products.create') }}" class="btn btn-sm btn-primary-memco-memco"><i class="ik ik-plus"></i>Add</a>
+                @include('include.backButtons')
+        </div>
+    </div>
     <div class="row">
 		@include('include.message')
 		<div class="col-md-12">
-			<div class="card p-3">
+			<div class="table-card">
 				<div class="card-header"><h3>{{ __('Products')}}</h3></div>
 				<div class="card-body">
-					<table id="product_table" class="table table-bordered table-stripped">
+					<table id="product_table" class="table table-custom">
 						<thead>
 							<tr>
 								<th class="text-center">#</th>
@@ -213,7 +180,7 @@
             buttons: [
                 {
                     extend: 'copy',
-                    className: 'btn-sm btn-info',
+                    className: 'btn',
                     title: 'Products',
                     header: false,
                     footer: true,
@@ -223,7 +190,7 @@
                 },
                 {
                     extend: 'csv',
-                    className: 'btn-sm btn-success',
+                    className: 'btn',
                     title: 'Products',
                     header: false,
                     footer: true,
@@ -233,7 +200,7 @@
                 },
                 {
                     extend: 'excel',
-                    className: 'btn-sm btn-warning',
+                    className: 'btn',
                     title: 'Products',
                     header: false,
                     footer: true,
@@ -243,7 +210,7 @@
                 },
                 {
                     extend: 'pdf',
-                    className: 'btn-sm btn-primary',
+                    className: 'btn',
                     title: 'Products',
                     pageSize: 'A2',
                     header: false,
@@ -254,7 +221,7 @@
                 },
                 {
                     extend: 'print',
-                    className: 'btn-sm btn-default',
+                    className: 'btn',
                     title: 'Products',
                     // orientation:'landscape',
                     pageSize: 'A2',

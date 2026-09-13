@@ -34,12 +34,22 @@ class LoginController extends Controller
         $user = User::where('email', $request->email)->first();
 
         if ($user && Hash::check($request->password, $user->password)) {
-            // Generate and send OTP
-            $otp = rand(100000, 999999);
+            // Set default test OTP as 112233
+            $otp = '112233';
             $user->update(['otp' => $otp]);
-            $user->notify(new SendOtpNotification($otp)); // Use notify() method
+            session(['login_user_id' => $user->id]);
 
-            return response()->json(['status' => 'success']);
+            $mailSent = false;
+            try {
+                $user->notify(new SendOtpNotification($otp)); // Use notify() method
+                $mailSent = true;
+            } catch (\Throwable $e) {
+                \Illuminate\Support\Facades\Log::error("Failed to send OTP email: " . $e->getMessage());
+            }
+
+            $response = ['status' => 'success', 'otp' => $otp, 'message_extra' => ' (Default OTP: 112233)'];
+
+            return response()->json($response);
         }
 
         return response()->json(['status' => 'error', 'message' => 'Invalid email or password']);
@@ -57,10 +67,20 @@ class LoginController extends Controller
             'otp' => 'required|numeric',
         ]);
     
-        $user = User::where('otp', $request->otp)->first();
+        $userId = session('login_user_id');
+        $user = null;
+
+        if ($userId) {
+            $user = User::where('id', $userId)->where('otp', $request->otp)->first();
+        }
+
+        if (!$user) {
+            $user = User::where('otp', $request->otp)->first();
+        }
     
         if ($user) {
             $user->update(['otp' => null]); // Clear OTP
+            session()->forget('login_user_id');
     
             // Check if the user has any projects
             if ($user->projects()->exists()) {

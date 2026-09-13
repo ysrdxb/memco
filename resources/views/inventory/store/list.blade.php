@@ -1,42 +1,37 @@
 @extends('inventory.layout')
 @section('title', 'Manage Projects')
 @push('head')
-<style>
-.select2.select2-container--default .select2-selection--multiple .select2-selection__rendered{
-    margin-top: 75px !important;
-}    
-</style>
+
 @endpush
 @section('content')
 
 <div class="container-fluid">
-    <div class="page-header">
-        <div class="row align-items-end">
-            <div class="col-lg-4">
-                <div class="page-header-title">
-                    <i class="ik ik-list bg-secondary"></i>
-                    <div class="d-inline">
-                        <h5>{{ __('Projects')}}</h5>
-                        <span>{{ __('Total '. count($stores) . ' Projects listed below') }}</span>
-                    </div>
-                </div>
+    <!-- Header Banner -->
+    <div class="header-dashboard-clean">
+        <div class="d-flex align-items-center mb-3 mb-md-0">
+            <div class="header-icon-box-clean">
+                <i class="ik ik-list"></i>
             </div>
-            <div class="col-lg-8 text-right">
-                <a href="#categoryAdd" data-toggle="modal" data-target="#categoryAdd" class="btn btn-sm btn-danger mr-4"><i class="ik ik-plus"></i>{{ __('Add Project')}}</a>
+            <div>
+                <h3 class="header-title-text-clean">{{ __('Projects')}}</h3>
+                <p class="header-sub-text-clean">{{ __('Total '. count($stores) . ' Projects listed below') }}</p>
+            </div>
+        </div>
+        <div class="d-flex align-items-center" style="gap: 12px;">
+            <a href="#categoryAdd" data-toggle="modal" data-target="#categoryAdd" class="btn btn-sm btn-primary-memco-memco mr-4"><i class="ik ik-plus"></i>{{ __('Add Project')}}</a>
                 @include('include.backButtons')
-            </div>
         </div>
     </div>
     <div class="row">
         @include('include.message')
         <div class="col-md-12">
-            <div class="card">
+            <div class="table-card">
                 <div class="card-header d-block">
                     <h3>{{ __('Manage Projects')}}</h3>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive bale-stripped table-bordered">
-                        <table id="advanced_table" class="table">
+                        <table id="advanced_table" class="table table-custom">
                             <thead>
                                 <tr>
                                     <th>ID</th>

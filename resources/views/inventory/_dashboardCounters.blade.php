@@ -1,343 +1,426 @@
-<!-- Card 1 - Bootstrap Brain Component -->
-<div class="row">
-    <div class="col-12 col-lg-3 col-md-6 col-sm-12">
-        <div class="card st-cir-card">
-            <div class="card-body p-3">
-                <a href="{{ route('transfer.getStatus') }}">
-                    <div class="row align-items-center">
-                        <div class="col-8">
-                            <h5 class="card-title widget-card-title mb-3">M.R Status</h5>
-                            <div class="d-flex align-items-center">
-                                <div class="completed-status mr-2" style="background: #26c281;padding: 5px;border-radius: 9px;color: white;">
-                                    <h4 class="m-0">{{ intval($total_transfers - $transfer_status) }}</h4>
-                                    <span>Completed</span>
-                                </div>
-                                <div class="pending-status" style="background: #bdbd04;padding: 6px;border-radius: 9px;color: white;">
-                                    <h4 class="m-0">{{ $transfer_status }}</h4>
-                                    <span>Pending</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="d-flex justify-content-end">
-                                <div class="status-icon p-3 d-flex align-items-center justify-content-center">
-                                    <div class="d-flex align-items-center">
-                                        <span class="arrow-icon bg-white-subtle text-white rounded-circle p-1 d-flex align-items-center justify-content-center">
-                                            <i class="fas fa-arrow-right bsb-rotate-45"></i>
-                                        </span>
-                                        <div>
-                                            <p class="fs-7 mb-0">{{ $total_transfers }}</p>
-                                            <span>Total</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </div>
-    
-    <div class="col-12 col-lg-3 col-md-6 col-sm-12">
-        <a href="{{ route('transfer.list') }}">
-            <div class="card st-cir-card p-1">
-                <div class="card-block">
-                    <div class="row align-items-center">
-                        <div class="col-6">
-                            <h5 class="card-title widget-card-title mb-3">M.R TRACKING</h5>
-                        </div>
-                        <div class="col-6 text-center">
-                            <h3 class=" fw-700 mb-4">{{ $total_transfers }}</h3>
-                            <h6 class="mb-0 ">All</h6>
-                        </div>
-                    </div>
+<style>
+    .stat-section-header {
+        margin-top: 24px;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .stat-section-title {
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--color-text-muted);
+        display: inline-flex;
+        align-items: center;
+        margin: 0;
+    }
+
+    .section-dot-bar {
+        width: 4px;
+        height: 14px;
+        border-radius: 4px;
+        display: inline-block;
+        margin-right: 8px;
+        background: var(--color-primary);
+    }
+
+    .dash-auto-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+        gap: 16px;
+        margin-bottom: 24px;
+    }
+
+    .card-link-wrapper {
+        text-decoration: none !important;
+        color: inherit !important;
+        display: block;
+        height: 100%;
+    }
+
+    .stat-card-clean {
+        background: var(--color-card);
+        border-radius: 12px;
+        border: 1px solid var(--color-border);
+        padding: 20px;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        transition: all 0.2s ease;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        height: 100%;
+        min-height: 104px;
+    }
+
+    .stat-card-clean:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        border-color: #cbd5e1;
+    }
+
+    .stat-card-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        flex-shrink: 0;
+        margin-left: 12px;
+    }
+
+    .icon-bg-navy { background: var(--color-primary); color: #ffffff; }
+    .icon-bg-red { background: var(--color-accent); color: #ffffff; }
+    .icon-bg-slate { background: #4A5568; color: #ffffff; }
+
+    .stat-card-info {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%;
+    }
+
+    .stat-card-title {
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--color-text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin: 0 0 8px 0;
+    }
+
+    .stat-card-number {
+        font-size: 28px;
+        font-weight: 800;
+        color: var(--color-text-primary);
+        line-height: 1.1;
+        letter-spacing: -0.5px;
+    }
+
+    /* M.R Status Pill Styling */
+    .status-badge-completed {
+        background: #dcfce7;
+        color: #15803d;
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-size: 11px;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .status-badge-pending {
+        background: #fef3c7;
+        color: #b45309;
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-size: 11px;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+    }
+</style>
+
+<!-- ==================== SECTION 1: OPERATIONS & TRANSFERS ==================== -->
+<div class="stat-section-header">
+    <h6 class="stat-section-title">
+        <span class="section-dot-bar"></span> Operations & Material Requests
+    </h6>
+</div>
+
+<div class="dash-auto-grid">
+    <!-- M.R Status -->
+    <a href="{{ route('transfer.getStatus') }}" class="card-link-wrapper">
+        <div class="stat-card-clean">
+            <div class="stat-card-info">
+                <h6 class="stat-card-title">M.R Status</h6>
+                <div class="mt-1 d-flex align-items-center flex-wrap" style="gap: 5px;">
+                    <span class="status-badge-completed">
+                        <i class="fas fa-check-circle mr-1"></i> {{ intval($total_transfers - $transfer_status) }} Done
+                    </span>
+                    <span class="status-badge-pending">
+                        <i class="fas fa-clock mr-1"></i> {{ $transfer_status }} Pend.
+                    </span>
                 </div>
             </div>
-        </a>
-    </div>        
-                
-
-    <div class="col-12 col-lg-3 col-md-6 col-sm-12">
-        <a href="{{ route('purchases.list') }}">
-            <div class="card st-cir-card p-1">
-                <div class="card-block">
-                    <div class="row align-items-center">
-                        <div class="col-6">
-                            <h5 class="card-title widget-card-title mb-3">L.P.O Records</h5>
-                        </div>                        
-                        <div class="col-6 text-center">
-                            <h3 class=" fw-700 mb-4">{{ $count_purchases }}</h3>
-                            <h6 class="mb-0 ">All</h6>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </a>
-    </div>         
-
-
-    <div class="col-12 col-lg-3 col-md-6 col-sm-12">
-        <div class="info-box elevation-2">
-            <span class="info-box-icon bg-gradient-orange elevation-2">
-                <i class="fas fa-truck"></i></span>
-            <div class="info-box-content">
-                <a href="{{ route('deliveryOrder.list') }}?type=do">
-                    <span class="info-box-text">Delivery Orders</span>
-                    <span class="info-box-number">
-                        <h2><b id="deliveryOrders">{{ $count_deliveryOrders }}</b></h2>
-                    </span>
-                </a>
+            <div class="stat-card-icon icon-bg-navy">
+                <i class="fas fa-tasks"></i>
             </div>
         </div>
-    </div>
+    </a>
 
-    <div class="col-12 col-lg-3 col-md-6 col-sm-12">
-        <div class="info-box elevation-2">
-            <span class="info-box-icon bg-gradient-pink elevation-2">
-                <i class="fas fa-truck"></i></span>
-            <div class="info-box-content">
-                <a href="{{ route('deliveryOrder.list') }}?type=mtv">
-                    <span class="info-box-text">M.T.V</span>
-                    <span class="info-box-number">
-                        <h2><b id="deliveryOrders">{{ $count_deliveryOrdersByWarehouse }}</b></h2>
-                    </span>
-                </a>
+    <!-- M.R Tracking -->
+    <a href="{{ route('transfer.list') }}" class="card-link-wrapper">
+        <div class="stat-card-clean">
+            <div class="stat-card-info">
+                <h6 class="stat-card-title">M.R Tracking</h6>
+                <div class="stat-card-number">{{ $total_transfers }}</div>
+            </div>
+            <div class="stat-card-icon icon-bg-slate">
+                <i class="fas fa-route"></i>
             </div>
         </div>
-    </div>     
-    
+    </a>
+
+    <!-- L.P.O Records -->
+    <a href="{{ route('purchases.list') }}" class="card-link-wrapper">
+        <div class="stat-card-clean">
+            <div class="stat-card-info">
+                <h6 class="stat-card-title">L.P.O Records</h6>
+                <div class="stat-card-number">{{ $count_purchases }}</div>
+            </div>
+            <div class="stat-card-icon icon-bg-navy">
+                <i class="fas fa-file-invoice-dollar"></i>
+            </div>
+        </div>
+    </a>
+
+    <!-- Delivery Orders -->
+    <a href="{{ route('deliveryOrder.list') }}?type=do" class="card-link-wrapper">
+        <div class="stat-card-clean">
+            <div class="stat-card-info">
+                <h6 class="stat-card-title">Delivery Orders</h6>
+                <div class="stat-card-number" id="deliveryOrders">{{ $count_deliveryOrders }}</div>
+            </div>
+            <div class="stat-card-icon icon-bg-slate">
+                <i class="fas fa-truck"></i>
+            </div>
+        </div>
+    </a>
+
+    <!-- M.T.V -->
+    <a href="{{ route('deliveryOrder.list') }}?type=mtv" class="card-link-wrapper">
+        <div class="stat-card-clean">
+            <div class="stat-card-info">
+                <h6 class="stat-card-title">M.T.V</h6>
+                <div class="stat-card-number" id="deliveryOrdersByWarehouse">{{ $count_deliveryOrdersByWarehouse }}</div>
+            </div>
+            <div class="stat-card-icon icon-bg-red">
+                <i class="fas fa-shipping-fast"></i>
+            </div>
+        </div>
+    </a>
+</div>
+
+<!-- ==================== SECTION 2: INVENTORY & MASTERS ==================== -->
+<div class="stat-section-header">
+    <h6 class="stat-section-title">
+        <span class="section-dot-bar"></span> Inventory & Resources
+    </h6>
+</div>
+
+<div class="dash-auto-grid">
     @if(Auth::user()->hasRole('Super Admin'))
-        <div class="col-12 col-lg-3 col-md-6 col-sm-12">
-            <div class="info-box elevation-2">
-                <span class="info-box-icon bg-gradient-olive elevation-2">
-                    <i class="fa fa-project-diagram"></i></span>
-                <div class="info-box-content">
-                    <a href="{{ route('stores.list') }}">
-                        <span class="info-box-text">All Projects / Stores</span>
-                        <span class="info-box-number">
-                            <h2><b id="warehouse">{{ \App\Models\Project::count() }}</b></h2>
-                        </span>
-                    </a>
+        <a href="{{ route('stores.list') }}" class="card-link-wrapper">
+            <div class="stat-card-clean">
+                <div class="stat-card-info">
+                    <h6 class="stat-card-title">Projects / Stores</h6>
+                    <div class="stat-card-number" id="warehouse">{{ \App\Models\Project::count() }}</div>
+                </div>
+                <div class="stat-card-icon icon-bg-navy">
+                    <i class="fas fa-project-diagram"></i>
                 </div>
             </div>
-        </div>
+        </a>
     @endif
 
-    
     @if($count_products)
-    <div class="col-12 col-lg-3 col-md-6 col-sm-12">
-        <div class="info-box elevation-2">
-            <span class="info-box-icon bg-gradient-info elevation-2">
-                <i class="fas fa-cubes"></i></span>
-            <div class="info-box-content">
-                <a href="{{ route('products.list') }}">
-                    <span class="info-box-text">Products</span>
-                    <span class="info-box-number">
-                        <h2><b id="products">{{ $count_products }}</b></h2>
-                    </span>
-                </a>
+        <a href="{{ route('products.list') }}" class="card-link-wrapper">
+            <div class="stat-card-clean">
+                <div class="stat-card-info">
+                    <h6 class="stat-card-title">Products</h6>
+                    <div class="stat-card-number" id="products">{{ $count_products }}</div>
+                </div>
+                <div class="stat-card-icon icon-bg-slate">
+                    <i class="fas fa-cubes"></i>
+                </div>
             </div>
-        </div>
-    </div>
-    @endif     
-    
+        </a>
+    @endif
+
     @if($count_tools)
-    <div class="col-12 col-lg-3 col-md-6 col-sm-12">
-        <div class="info-box elevation-2">
-            <span class="info-box-icon bg-gradient-pink elevation-2">
-                <i class="ik ik-settings"></i></span>
-            <div class="info-box-content">
-                <a href="{{ route('products.list') }}?type=tool">
-                    <span class="info-box-text">Tools</span>
-                    <span class="info-box-number">
-                        <h2><b id="products">{{ $count_tools }}</b></h2>
-                    </span>
-                </a>
+        <a href="{{ route('products.list') }}?type=tool" class="card-link-wrapper">
+            <div class="stat-card-clean">
+                <div class="stat-card-info">
+                    <h6 class="stat-card-title">Tools</h6>
+                    <div class="stat-card-number" id="tools">{{ $count_tools }}</div>
+                </div>
+                <div class="stat-card-icon icon-bg-navy">
+                    <i class="fas fa-tools"></i>
+                </div>
             </div>
-        </div>
-    </div>
+        </a>
     @endif
 
     @if($count_brands)
-    <div class="col-12 col-lg-3 col-md-6 col-sm-12">
-        <div class="info-box elevation-2">
-            <span class="info-box-icon bg-gradient-warning elevation-2">
-                <i class="fas fa-award"></i></span>
-            <div class="info-box-content">
-                <a href="{{ route('brands.list') }}">
-                    <span class="info-box-text">Brands</span>
-                    <span class="info-box-number">
-                        <h2><b id="brands">{{ $count_brands }}</b></h2>
-                    </span>
-                </a>
+        <a href="{{ route('brands.list') }}" class="card-link-wrapper">
+            <div class="stat-card-clean">
+                <div class="stat-card-info">
+                    <h6 class="stat-card-title">Brands</h6>
+                    <div class="stat-card-number" id="brands">{{ $count_brands }}</div>
+                </div>
+                <div class="stat-card-icon icon-bg-slate">
+                    <i class="fas fa-award"></i>
+                </div>
             </div>
-        </div>
-    </div>
+        </a>
     @endif
 
     @if($count_suppliers)
-    <div class="col-12 col-lg-3 col-md-6 col-sm-12">
-        <div class="info-box elevation-2">
-            <span class="info-box-icon bg-gradient-danger elevation-2">
-                <i class="fas fa-user-plus"></i></span>
-            <div class="info-box-content">
-                <a href="{{ route('suppliers.list') }}">
-                    <span class="info-box-text">Suppliers</span>
-                    <span class="info-box-number">
-                        <h2><b id="suppliers">{{ $count_suppliers }}</b></h2>
-                    </span>
-                </a>
+        <a href="{{ route('suppliers.list') }}" class="card-link-wrapper">
+            <div class="stat-card-clean">
+                <div class="stat-card-info">
+                    <h6 class="stat-card-title">Suppliers</h6>
+                    <div class="stat-card-number" id="suppliers">{{ $count_suppliers }}</div>
+                </div>
+                <div class="stat-card-icon icon-bg-red">
+                    <i class="fas fa-truck-loading"></i>
+                </div>
             </div>
-        </div>
-    </div>
-    @endif
-
-    @if($count_categories)
-    <div class="col-12 col-lg-3 col-md-6 col-sm-12">
-        <div class="info-box elevation-2">
-            <span class="info-box-icon bg-gradient-dark elevation-2">
-                <i class="fas fa-boxes"></i></span>
-            <div class="info-box-content">
-                <a href="{{ route('categories.list') }}">
-                    <span class="info-box-text">Activities</span>
-                    <span class="info-box-number">
-                        <h2><b id="categories">{{ $count_categories }}</b></h2>
-                    </span>
-                </a>
-            </div>
-        </div>
-    </div>
-    @endif
-
-    @if($count_subcategories)
-    <div class="col-12 col-lg-3 col-md-6 col-sm-12">
-        <div class="info-box elevation-2">
-            <span class="info-box-icon bg-gradient-primary elevation-2">
-                <i class="fas fa-list-alt"></i></span>
-            <div class="info-box-content">
-                <a href="{{ route('categories.list') }}">
-                    <span class="info-box-text">Sub Activities</span>
-                    <span class="info-box-number">
-                        <h2><b id="subcategories">{{ $count_subcategories }}</b></h2>
-                    </span>
-                </a>
-            </div>
-        </div>
-    </div>
-    @endif
-
-    @if(Auth::user()->project->first())
-    <div class="col-12 col-lg-3 col-md-6 col-sm-12">
-        <div class="info-box elevation-2">
-            <span class="info-box-icon bg-gradient-dark elevation-2">
-                <i class="fas fa-cubes"></i></span>
-            <div class="info-box-content">
-                <a href="{{ route('myprojects') }}">
-                    <span class="info-box-text">My Projects</span>
-                    <span class="info-box-number">
-                        <h2><b id="products">{{ $count_myprojects }}</b></h2>
-                    </span>
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-12 col-lg-3 col-md-6 col-sm-12">
-        <div class="info-box elevation-2">
-            <span class="info-box-icon bg-gradient-secondary elevation-2">
-                <i class="fas fa-home"></i></span>
-            <div class="info-box-content">
-                <a href="{{ route('stores.materialIssued') }}">
-                    <span class="info-box-text">Material Issued</span>
-                    <span class="info-box-number">
-                        <h2><b id="projectmissued">{{ $count_projectmissued }}</b></h2>
-                    </span>
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-12 col-lg-3 col-md-6 col-sm-12">
-        <div class="info-box elevation-2">
-            <span class="info-box-icon bg-gradient-primary elevation-2">
-                <i class="fas fa-box"></i></span>
-            <div class="info-box-content">
-                <a href="{{ route('stores.stock', encrypt(Auth::user()->project->first()->id)) }}">
-                    <span class="info-box-text">Track Stock</span>
-                    <span class="info-box-number">
-                        <h2><b id="deliveryOrders"></b></h2>
-                    </span>
-                </a>
-            </div>
-        </div>
-    </div> 
-    
-    <div class="col-12 col-lg-3 col-md-6 col-sm-12">
-        <div class="info-box elevation-2">
-            <span class="info-box-icon bg-gradient-info elevation-2">
-                <i class="fas fa-box"></i></span>
-            <div class="info-box-content">
-                <a href="{{ route('transferReturns.list') }}">
-                    <span class="info-box-text">Material Returns</span>
-                    <span class="info-box-number">
-                        <h2><b id="deliveryOrders"></b></h2>
-                    </span>
-                </a>
-            </div>
-        </div>
-    </div>        
-    @endif        
-
-
-    @if($count_users)
-    <div class="col-12 col-lg-3 col-md-6 col-sm-12">
-        <div class="info-box elevation-2">
-            <span class="info-box-icon bg-gradient-primary elevation-2">
-                <i class="fas fa-users"></i></span>
-            <div class="info-box-content">
-                <a href="{{ route('users.list') }}">
-                    <span class="info-box-text">Users</span>
-                    <span class="info-box-number">
-                        <h2><b id="users">{{ $count_users }}</b></h2>
-                    </span>
-                </a>
-            </div>
-        </div>
-    </div>
+        </a>
     @endif
 
     @if($count_warehouse)
-    <div class="col-12 col-lg-3 col-md-6 col-sm-12">
-        <div class="info-box elevation-2">
-            <span class="info-box-icon bg-gradient-pink elevation-2">
-                <i class="fas fa-home"></i></span>
-            <div class="info-box-content">
-                <a href="{{ route('warehouses.list') }}">
-                    <span class="info-box-text">Main Stores</span>
-                    <span class="info-box-number">
-                        <h2><b id="warehouse">{{ $count_warehouse }}</b></h2>
-                    </span>
-                </a>
+        <a href="{{ route('warehouses.list') }}" class="card-link-wrapper">
+            <div class="stat-card-clean">
+                <div class="stat-card-info">
+                    <h6 class="stat-card-title">Main Stores</h6>
+                    <div class="stat-card-number" id="warehouse">{{ $count_warehouse }}</div>
+                </div>
+                <div class="stat-card-icon icon-bg-navy">
+                    <i class="fas fa-warehouse"></i>
+                </div>
             </div>
-        </div>
-    </div>
+        </a>
+    @endif
+</div>
 
+<!-- ==================== SECTION 3: PROJECT SPECIFIC DATA ==================== -->
+@if(Auth::user()->project->first())
+    <div class="stat-section-header">
+        <h6 class="stat-section-title">
+            <span class="section-dot-bar"></span> Project Store Details
+        </h6>
+    </div>
+    <div class="dash-auto-grid">
+        <a href="{{ route('myprojects') }}" class="card-link-wrapper">
+            <div class="stat-card-clean">
+                <div class="stat-card-info">
+                    <h6 class="stat-card-title">My Projects</h6>
+                    <div class="stat-card-number">{{ $count_myprojects }}</div>
+                </div>
+                <div class="stat-card-icon icon-bg-slate">
+                    <i class="fas fa-building"></i>
+                </div>
+            </div>
+        </a>
+
+        <a href="{{ route('stores.materialIssued') }}" class="card-link-wrapper">
+            <div class="stat-card-clean">
+                <div class="stat-card-info">
+                    <h6 class="stat-card-title">Material Issued</h6>
+                    <div class="stat-card-number">{{ $count_projectmissued }}</div>
+                </div>
+                <div class="stat-card-icon icon-bg-navy">
+                    <i class="fas fa-dolly"></i>
+                </div>
+            </div>
+        </a>
+
+        <a href="{{ route('stores.stock', encrypt(Auth::user()->project->first()->id)) }}" class="card-link-wrapper">
+            <div class="stat-card-clean">
+                <div class="stat-card-info">
+                    <h6 class="stat-card-title">Track Stock</h6>
+                    <div class="mt-2">
+                        <span class="text-danger font-weight-bold" style="font-size: 14px;">View &rarr;</span>
+                    </div>
+                </div>
+                <div class="stat-card-icon icon-bg-slate">
+                    <i class="fas fa-boxes-stacked"></i>
+                </div>
+            </div>
+        </a>
+
+        <a href="{{ route('transferReturns.list') }}" class="card-link-wrapper">
+            <div class="stat-card-clean">
+                <div class="stat-card-info">
+                    <h6 class="stat-card-title">Material Returns</h6>
+                    <div class="mt-2">
+                        <span class="text-danger font-weight-bold" style="font-size: 14px;">View &rarr;</span>
+                    </div>
+                </div>
+                <div class="stat-card-icon icon-bg-navy">
+                    <i class="fas fa-undo"></i>
+                </div>
+            </div>
+        </a>
+    </div>
+@endif
+
+<!-- ==================== SECTION 4: ADMINISTRATION ==================== -->
+<div class="stat-section-header">
+    <h6 class="stat-section-title">
+        <span class="section-dot-bar"></span> Administration & Master Data
+    </h6>
+</div>
+
+<div class="dash-auto-grid">
+    @if($count_categories)
+        <a href="{{ route('categories.list') }}" class="card-link-wrapper">
+            <div class="stat-card-clean">
+                <div class="stat-card-info">
+                    <h6 class="stat-card-title">Activities</h6>
+                    <div class="stat-card-number" id="categories">{{ $count_categories }}</div>
+                </div>
+                <div class="stat-card-icon icon-bg-slate">
+                    <i class="fas fa-list"></i>
+                </div>
+            </div>
+        </a>
     @endif
 
-    <div class="col-12 col-lg-3 col-md-6 col-sm-12">
-        <div class="info-box elevation-2">
-            <span class="info-box-icon bg-gradient-primary elevation-2">
-                <i class="fas fa-users"></i></span>
-            <div class="info-box-content">
-                <a href="{{ route('employees.list') }}">
-                    <span class="info-box-text">Employees</span>
-                    <span class="info-box-number">
-                        <h2><b id="users">{{ \App\Models\Employee::count() }}</b></h2>
-                    </span>
-                </a>
+    @if($count_subcategories)
+        <a href="{{ route('categories.list') }}" class="card-link-wrapper">
+            <div class="stat-card-clean">
+                <div class="stat-card-info">
+                    <h6 class="stat-card-title">Sub Activities</h6>
+                    <div class="stat-card-number" id="subcategories">{{ $count_subcategories }}</div>
+                </div>
+                <div class="stat-card-icon icon-bg-navy">
+                    <i class="fas fa-layer-group"></i>
+                </div>
+            </div>
+        </a>
+    @endif
+
+    @if($count_users)
+        <a href="{{ route('users.list') }}" class="card-link-wrapper">
+            <div class="stat-card-clean">
+                <div class="stat-card-info">
+                    <h6 class="stat-card-title">Users</h6>
+                    <div class="stat-card-number" id="users">{{ $count_users }}</div>
+                </div>
+                <div class="stat-card-icon icon-bg-red">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+            </div>
+        </a>
+    @endif
+
+    <a href="{{ route('employees.list') }}" class="card-link-wrapper">
+        <div class="stat-card-clean">
+            <div class="stat-card-info">
+                <h6 class="stat-card-title">Employees</h6>
+                <div class="stat-card-number">{{ \App\Models\Employee::count() }}</div>
+            </div>
+            <div class="stat-card-icon icon-bg-navy">
+                <i class="fas fa-users"></i>
             </div>
         </div>
-    </div>
-
+    </a>
 </div>

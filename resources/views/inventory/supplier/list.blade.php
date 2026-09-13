@@ -3,35 +3,34 @@
 @section('content')
 
 <div class="container-fluid">
-	<div class="page-header">
-		<div class="row align-items-end">
-			<div class="col-lg-4">
-				<div class="page-header-title">
-					<i class="ik ik-list bg-secondary"></i>
-					<div class="d-inline">
-						<h5>{{ __('Suppliers')}}</h5>
-						<span>{{ __('List of Suppliers')}}</span>
-					</div>
-				</div>
-			</div>
-            <div class="col-lg-8 text-right">
-                <a href="#categoryAdd" data-toggle="modal" data-target="#categoryAdd" class="btn btn-sm btn-danger"><i class="ik ik-plus"></i>Create</a>
-                @include('include.backButtons')               
+	<!-- Header Banner -->
+    <div class="header-dashboard-clean">
+        <div class="d-flex align-items-center mb-3 mb-md-0">
+            <div class="header-icon-box-clean">
+                <i class="ik ik-list"></i>
             </div>
-		</div>
-	</div>
+            <div>
+                <h3 class="header-title-text-clean">{{ __('Suppliers')}}</h3>
+                <p class="header-sub-text-clean">{{ __('List of Suppliers')}}</p>
+            </div>
+        </div>
+        <div class="d-flex align-items-center" style="gap: 12px;">
+            <a href="#categoryAdd" data-toggle="modal" data-target="#categoryAdd" class="btn btn-sm btn-primary-memco-memco"><i class="ik ik-plus"></i>Create</a>
+                @include('include.backButtons')
+        </div>
+    </div>
     <div class="row">
         @include('include.message')
         <div class="col-md-12">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="card">
+                    <div class="table-card">
                         <div class="card-header d-block">
                             <h3>{{ __('Supplier')}}</h3>
                         </div>
                         <div class="card-body p-0 table-border-style">
                             <div class="table-responsive">
-                                <table id="advanced_table" class="table">
+                                <table id="advanced_table" class="table table-custom">
                                     <thead>
                                         <tr>
                                             <th class="nosort" width="10">

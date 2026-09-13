@@ -457,19 +457,21 @@ class TransferController extends Controller
                 return $row->user->name ?? '';
             })
             ->addColumn('status', function ($row) {
-                //$status_badge = '<span class="badge badge-pill badge-' . ($row->status == 'received' || $row->status == 'delivered' ? 'primary' : 'danger') . ' mb-1">' . $row->status . '</span>';
-                return strtoupper($row->status);
+                $statusUpper = strtoupper($row->status);
+                if ($statusUpper === 'PENDING') {
+                    return '<span style="background: #fef3c7; color: #b45309; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700;"><i class="fas fa-clock mr-1"></i> ' . $statusUpper . '</span>';
+                } elseif ($statusUpper === 'COMPLETED' || $statusUpper === 'DELIVERED') {
+                    return '<span style="background: #dcfce7; color: #15803d; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700;"><i class="fas fa-check-circle mr-1"></i> ' . $statusUpper . '</span>';
+                }
+                return '<span style="background: #e2e8f0; color: #475569; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700;">' . $statusUpper . '</span>';
             })
-            ->rawColumns(['status'])
             ->addColumn('action', function ($row) {
                 $view = route('transfer.data', encrypt($row->id));
-                $actions = '<a class="mr-4 text-info" href="'.$view.'">View</a>';
+                $actions = '<a class="mr-4 text-danger font-weight-bold" style="font-size: 13px; text-decoration: none;" href="'.$view.'">View &rarr;</a>';
 
                 return $actions;
             })
-
-
-            ->rawColumns(['action'])
+            ->rawColumns(['status', 'action'])
             ->filter(function ($query) use ($request) {
                 if ($request->has('search') && !empty($request->input('search')['value'])) {
                     $searchValue = $request->input('search')['value'];

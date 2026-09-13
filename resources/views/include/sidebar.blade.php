@@ -31,6 +31,7 @@
                         @can('manage_user')
                         <a href="{{url('users')}}" class="menu-item {{ ($segment1 == 'users') ? 'active' : '' }}">{{ __('Users')}}</a>
                         <a href="{{url('user/create')}}" class="menu-item {{ ($segment1 == 'user' && $segment2 == 'create') ? 'active' : '' }}">{{ __('Add User')}}</a>
+                        <a href="{{route('settings.index')}}" class="menu-item {{ ($segment1 == 'settings') ? 'active' : '' }}">{{ __('Settings')}}</a>
                          @endcan
                          <!-- only those have manage_role permission will get access -->
                         @can('manage_roles')
@@ -41,6 +42,11 @@
                         <a href="{{url('permission')}}" class="menu-item {{ ($segment1 == 'permission') ? 'active' : '' }}">{{ __('Permission')}}</a>
                         @endcan
                     </div>
+                </div>
+
+                <div class="nav-lavel">AI Assistant</div>
+                <div class="nav-item {{ ($segment1 == 'ai-chat') ? 'active' : '' }}">
+                    <a href="{{route('ai.chat')}}"><i class="ik ik-cpu" style="color: var(--color-accent);"></i><span style="font-weight: 700;">{{ __('Ask AI')}}</span></a>
                 </div>
 
 

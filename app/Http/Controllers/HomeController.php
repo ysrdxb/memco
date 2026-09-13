@@ -60,12 +60,12 @@ class HomeController extends Controller
         return redirect()->route('dashboard');
     }       
 
-    public function dashboard(): view
+    public function dashboard(): View
     {        
-        return view('inventory.dashboard');
+        return $this->dashboardData(request(), true);
     }
 
-    public function dashboardData()
+    public function dashboardData($request = null, $isDirectView = false)
     {
         $user = Auth::user();
 
@@ -252,6 +252,28 @@ class HomeController extends Controller
             $count_deliveryOrdersByWarehouse = $deliveryOrdersByWarehouse->where('delivered_by', 'store')->distinct('delivery_order_no')->count('delivery_order_no');
         }
     
+        if ($isDirectView) {
+            return view('inventory.dashboard', compact(
+                'count_transfers',
+                'count_purchases',
+                'count_deliveryOrders',
+                'count_projects',
+                'count_users',
+                'count_products',
+                'count_tools',
+                'count_brands',
+                'count_suppliers',
+                'count_categories',
+                'count_subcategories',
+                'count_projectmissued',
+                'count_warehouse',
+                'transfer_status',
+                'total_transfers',
+                'count_myprojects',
+                'count_deliveryOrdersByWarehouse'
+            ));
+        }
+
         $html = view('inventory._dashboardCounters', compact(
             'count_transfers',
             'count_purchases',
@@ -265,16 +287,14 @@ class HomeController extends Controller
             'count_categories',
             'count_subcategories',
             'count_projectmissued',
-           // 'count_warehousemissued',
             'count_warehouse',
             'transfer_status',
             'total_transfers',
             'count_myprojects',
-            'count_deliveryOrdersByWarehouse',
+            'count_deliveryOrdersByWarehouse'
         ))->render();
-        
+
         return response()->json(['html' => $html]);
-                 
     }          
 
     public function clearCache(): View
@@ -305,7 +325,7 @@ class HomeController extends Controller
             $projectName = Auth::user()->warehouses->first()->name;
         }
         
-        $projectName = '<marquee behavior="scroll" direction="left" scrollamount="2" style="height: 100%; animation: marquee-up-down 10s linear infinite;">[ '.Auth::user()->name.' '.' ( '.$projectName.' ) ]</marquee>';
+        $projectName = Auth::user()->name . ' ( ' . $projectName . ' )';
         return $projectName;
     }
 

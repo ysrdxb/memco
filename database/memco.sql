@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1:3306
--- Generation Time: Aug 24, 2024 at 05:23 AM
--- Server version: 10.11.8-MariaDB-cll-lve
--- PHP Version: 7.2.34
+-- Host: 127.0.0.1
+-- Generation Time: Sep 13, 2026 at 08:55 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.3.15
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `u235304865_memco_erp`
+-- Database: `memco`
 --
 
 -- --------------------------------------------------------
@@ -26433,6 +26433,18 @@ INSERT INTO `material_issued_history` (`id`, `issued_id`, `product_id`, `quantit
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `material_request_details`
+--
+
+CREATE TABLE `material_request_details` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `migrations`
 --
 
@@ -26456,7 +26468,9 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (7, '2016_06_01_000005_create_oauth_personal_access_clients_table', 1),
 (8, '2019_08_19_000000_create_failed_jobs_table', 1),
 (9, '2020_03_09_135529_create_permission_tables', 1),
-(10, '2024_01_27_101153_create_notifications_table', 2);
+(10, '2024_01_27_101153_create_notifications_table', 2),
+(11, '2024_01_15_042427_create_material_request_details_table', 3),
+(12, '2026_09_03_165942_create_settings_table', 4);
 
 -- --------------------------------------------------------
 
@@ -26501,7 +26515,9 @@ INSERT INTO `model_has_roles` (`role_id`, `model_type`, `model_id`) VALUES
 (1, 'App\\Models\\User', 10),
 (1, 'App\\Models\\User', 22),
 (1, 'App\\Models\\User', 3805),
+(1, 'App\\Models\\User', 3815),
 (2, 'App\\Models\\User', 3769),
+(2, 'App\\Models\\User', 3815),
 (6, 'App\\Models\\User', 2),
 (6, 'App\\Models\\User', 3),
 (6, 'App\\Models\\User', 4),
@@ -48717,6 +48733,27 @@ INSERT INTO `role_has_permissions` (`permission_id`, `role_id`) VALUES
 (27, 6),
 (27, 7),
 (28, 5);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `settings`
+--
+
+CREATE TABLE `settings` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `key` varchar(255) NOT NULL,
+  `value` text DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `settings`
+--
+
+INSERT INTO `settings` (`id`, `key`, `value`, `created_at`, `updated_at`) VALUES
+(1, 'groq_api_key', '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', '2026-09-03 12:17:08', '2026-09-03 12:17:08');
 
 -- --------------------------------------------------------
 
@@ -149701,7 +149738,7 @@ INSERT INTO `users` (`id`, `employee_no`, `type`, `name`, `email`, `phone`, `dep
 (4, NULL, NULL, 'wessam', 'brajeshsingh19521@gmail.com', '0551204567', 1, 1, NULL, '$2y$10$KUHZvp02hQpcP2ubesUoAeKulXpRSrIO7yTE6VBHkIKsIXV7EqpZS', NULL, NULL, NULL, 23, NULL, '2024-08-24 01:29:44', NULL),
 (5, NULL, NULL, 'M. Khalid', 'khalid@memcouae.ae', '0582165340', NULL, 0, NULL, '$2y$10$7aH3Ij10BR.QHb5diRZMJu7QWNqIt0fRaAnWSxtXaICL8MPGYLJF.', NULL, NULL, NULL, NULL, '2023-12-21 09:06:59', '2024-08-24 03:45:23', NULL),
 (7, 2492, NULL, 'Kanan', 'pandiyankannappan@gmail.com', '0582684173', 1, 1, NULL, '$2y$10$v97ET7hJX4EkbQF2o/ThD.kTGMtCk/IP8EIwp/5hcJqHTpdE4FqPi', NULL, NULL, NULL, 4, '2024-01-12 02:00:11', '2024-08-22 03:18:22', NULL),
-(10, NULL, NULL, 'Yasirr', 'eyasirs@gmail.com', '34564356', NULL, NULL, NULL, '$2y$10$dxCpZgBEEGSwem0cfA3sveNtwpDukULVj1yu528jnRjoY8.Dj4UB.', NULL, NULL, NULL, NULL, '2024-02-02 10:29:15', '2024-08-22 06:25:20', NULL),
+(10, NULL, NULL, 'Yasirr', 'admin@memcouae.com', '34564356', NULL, NULL, NULL, '$2y$10$dxCpZgBEEGSwem0cfA3sveNtwpDukULVj1yu528jnRjoY8.Dj4UB.', NULL, NULL, NULL, NULL, '2024-02-02 10:29:15', '2026-09-03 12:10:59', NULL),
 (11, NULL, NULL, 'shahjakhan', 'shahja.su@memcouae.com', '0582175630', 1, 257, NULL, '$2y$10$ddJAHK72gLM1kt2N6lcU6uJ.gj/UBRpuI5DkviAEe9DFRb4Y/SttW', NULL, NULL, NULL, NULL, '2024-02-03 06:10:33', '2024-04-27 03:54:08', NULL),
 (12, 0, NULL, 'shahjakhan', 'shahja.WV@memcouae.com', '0582175630', 1, 1, NULL, '$2y$10$Si.p2Vzo1ZqYoBxpY7g4fe4Y7wZ99iwzl8hj6YXx7YYwb9hNvzoTW', NULL, NULL, NULL, NULL, '2024-02-03 06:12:40', '2024-04-05 04:22:23', NULL),
 (14, NULL, NULL, 'parvez', 'parvez.rd@memcouae.com', '0525063125', 1, 1, NULL, '$2y$10$knzxFQVjEwaMYhKTw/tONev.n570N80AEOwO6oQUJbnt0QeKQEuFu', NULL, NULL, NULL, NULL, '2024-02-03 06:17:01', '2024-08-08 09:54:28', NULL),
@@ -149737,9 +149774,10 @@ INSERT INTO `users` (`id`, `employee_no`, `type`, `name`, `email`, `phone`, `dep
 (3803, NULL, NULL, 'Altaf REZA', 'altafreza1004@gmail.com', '0566126421', 1, 1, NULL, '$2y$10$V9OZiiozvY77cxTUFU2n.ucRPYzixyxOETjw66.oMLuXGvqWZMOuG', NULL, NULL, NULL, 7, '2024-07-26 10:44:15', '2024-08-14 13:29:32', NULL),
 (3804, NULL, NULL, 'Uzair', 'uzair01786@gmail.com', '0582165340', 1, 1, NULL, '$2y$10$n8WOSwa7RPnBXBxfz1yys.dI3xmcL7wIDy5DPqB0kXrtBJn.DBXi6', NULL, NULL, NULL, 4, '2023-12-21 09:06:59', '2024-08-24 04:43:22', NULL),
 (3805, NULL, NULL, 'Mehboob', 'youralam01@gmail.com', '34564356', 1, 1, NULL, '$2y$10$1kENP9CzKYUI/p/xW5uJHuBuqNhVr95iKcy6T8GAzJRoKBltcZmyi', NULL, NULL, NULL, NULL, '2024-08-07 06:46:30', '2024-08-13 12:49:47', NULL),
-(3806, NULL, NULL, 'Yaser Test', 'ysrdxb@gmail.com', '34564356', NULL, NULL, NULL, '$2y$10$dxCpZgBEEGSwem0cfA3sveNtwpDukULVj1yu528jnRjoY8.Dj4UB.', NULL, NULL, NULL, 4, '2024-08-07 10:31:02', '2024-08-24 04:52:25', NULL),
+(3806, NULL, NULL, 'Yaser Test', 'ysrdxb@gmail.com', '34564356', NULL, NULL, NULL, '$2y$10$dxCpZgBEEGSwem0cfA3sveNtwpDukULVj1yu528jnRjoY8.Dj4UB.', NULL, NULL, NULL, 7, '2024-08-07 10:31:02', '2026-08-27 21:43:44', NULL),
 (3810, NULL, NULL, 'PM Wessam', 'memco.p230@gmail.com', '111111111', NULL, NULL, NULL, '$2y$10$7aH3Ij10BR.QHb5diRZMJu7QWNqIt0fRaAnWSxtXaICL8MPGYLJF.', NULL, NULL, NULL, NULL, '2024-08-08 10:35:33', '2024-08-08 10:35:33', NULL),
-(3813, NULL, NULL, 'zain', 'zainulabdinbaloch04@gmail.com', '0563449747', NULL, NULL, NULL, '$2y$10$qbggJPQEt3Nsw/ApLTub2ehkUGG//aT/P5aXCzVnEoiTRgQpq3JLq', NULL, NULL, NULL, 4, '2024-08-23 05:39:27', '2024-08-24 02:27:53', NULL);
+(3813, NULL, NULL, 'zain', 'zainulabdinbaloch04@gmail.com', '0563449747', NULL, NULL, NULL, '$2y$10$qbggJPQEt3Nsw/ApLTub2ehkUGG//aT/P5aXCzVnEoiTRgQpq3JLq', NULL, NULL, NULL, 4, '2024-08-23 05:39:27', '2024-08-24 02:27:53', NULL),
+(3815, NULL, NULL, 'Admin Memco', 'admin@memco.com', NULL, NULL, NULL, NULL, '$2y$10$4/80w4fOGIi6eCYBvstmauPTiKnYb93.YVx4uhp5rjFL4AfifV9e6', NULL, NULL, NULL, NULL, '2026-08-27 21:25:36', '2026-08-27 21:32:24', NULL);
 
 -- --------------------------------------------------------
 
@@ -149871,6 +149909,12 @@ ALTER TABLE `material_issued_history`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `material_request_details`
+--
+ALTER TABLE `material_request_details`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `migrations`
 --
 ALTER TABLE `migrations`
@@ -149992,6 +150036,13 @@ ALTER TABLE `roles`
 ALTER TABLE `role_has_permissions`
   ADD PRIMARY KEY (`permission_id`,`role_id`),
   ADD KEY `role_has_permissions_role_id_foreign` (`role_id`);
+
+--
+-- Indexes for table `settings`
+--
+ALTER TABLE `settings`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `settings_key_unique` (`key`);
 
 --
 -- Indexes for table `stock_details`
@@ -150181,10 +150232,16 @@ ALTER TABLE `material_issued_history`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=98;
 
 --
+-- AUTO_INCREMENT for table `material_request_details`
+--
+ALTER TABLE `material_request_details`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `notifications`
@@ -150251,6 +150308,12 @@ ALTER TABLE `purchase_details`
 --
 ALTER TABLE `roles`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `settings`
+--
+ALTER TABLE `settings`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `stock_details`
@@ -150340,7 +150403,7 @@ ALTER TABLE `units`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3815;
+  MODIFY `id` int(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3816;
 
 --
 -- AUTO_INCREMENT for table `warehouses`

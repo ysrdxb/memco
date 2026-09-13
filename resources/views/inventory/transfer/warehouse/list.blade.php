@@ -2,27 +2,26 @@
 @section('title', 'Material Requisition')
 @section('content')
 <div class="container-fluid">
-	<div class="page-header">
-		<div class="row align-items-end">
-			<div class="col-lg-4">
-				<div class="page-header-title">
-					<i class="ik ik-list bg-secondary"></i>
-					<div class="d-inline">
-						<h5>{{ __('Material Requests from Store')}}</h5>
-						<span>{{ __('Material Requests from store')}}</span>
-					</div>
-				</div>
-			</div>
-            <div class="col-lg-8 text-right">
-                <a href="{{ url()->previous() }}" class="btn btn-secondary ml-4"><span class="ik ik-arrow-left"></span> Back</a>
+	<!-- Header Banner -->
+    <div class="header-dashboard-clean">
+        <div class="d-flex align-items-center mb-3 mb-md-0">
+            <div class="header-icon-box-clean">
+                <i class="ik ik-list"></i>
             </div>
-		</div>
-	</div> 
+            <div>
+                <h3 class="header-title-text-clean">{{ __('Material Requests from Store')}}</h3>
+                <p class="header-sub-text-clean">{{ __('Material Requests from store')}}</p>
+            </div>
+        </div>
+        <div class="d-flex align-items-center" style="gap: 12px;">
+            <a href="{{ url()->previous() }}" class="btn btn-secondary-memco ml-4"><span class="ik ik-arrow-left"></span> Back</a>
+        </div>
+    </div> 
 	<div class="row">
 		<div class="col-md-12">		
-			<div class="card">
+			<div class="table-card">
 				<div class="card-body">
-					<table id="advanced_table" class="table table-bordered">
+					<table id="advanced_table" class="table table-custom">
 						<thead>
 							<tr>
 								<th class="nosort">Date</th>

@@ -351,7 +351,7 @@ class PurchaseController extends Controller
             })
             ->addColumn('transfer_no', function ($row) {
                 $view = route('transfer.detail', encrypt($row->transfer->id));
-                return '<a href="'.$view.'" class="text-primary" target="_blank">'.$row->transfer->transfer_no.'</a>';
+                return '<a href="'.$view.'" class="text-danger font-weight-bold" style="text-decoration: none;" target="_blank">'.$row->transfer->transfer_no.'</a>';
             })
             ->addColumn('supplier_name', function ($row) {
                 return $row->supplier ? $row->supplier->name : '';
@@ -360,17 +360,21 @@ class PurchaseController extends Controller
                 return $row->total_amount;
             })
             ->addColumn('status', function ($row) {
-                return $row->status;
+                $statusUpper = strtoupper($row->status);
+                if ($statusUpper === 'PENDING') {
+                    return '<span style="background: #fef3c7; color: #b45309; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700;"><i class="fas fa-clock mr-1"></i> ' . $statusUpper . '</span>';
+                } elseif ($statusUpper === 'COMPLETED' || $statusUpper === 'DELIVERED') {
+                    return '<span style="background: #dcfce7; color: #15803d; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700;"><i class="fas fa-check-circle mr-1"></i> ' . $statusUpper . '</span>';
+                }
+                return '<span style="background: #e2e8f0; color: #475569; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700;">' . $statusUpper . '</span>';
             })
             ->addColumn('action', function ($row) {
-               // if(Auth::user()->type=='data_entry') {
-                    $encryptedId = encrypt($row->id);
-                    $action = '<a href="'.route('purchases.detail', $encryptedId).'" class="btn btn-primary mr-4">Detail</a>'; 
-                    $action .='<a href="#!" class="deleteBtn" item-id="' . $encryptedId . '"><i class="ik ik-trash f-16 ml-15 text-red"></i></a>';
-                   return $action;
-               // }
+                $encryptedId = encrypt($row->id);
+                $action = '<a href="'.route('purchases.detail', $encryptedId).'" class="mr-4 text-danger font-weight-bold" style="font-size: 13px; text-decoration: none;">Detail &rarr;</a>'; 
+                $action .='<a href="#!" class="deleteBtn text-secondary" style="font-size: 13px;" item-id="' . $encryptedId . '"><i class="fas fa-trash-alt"></i></a>';
+                return $action;
             })
-            ->rawColumns(['action','transfer_no'])
+            ->rawColumns(['action','transfer_no','status'])
             ->filter(function ($query) use ($request) {
                 if ($request->has('search') && !empty($request->input('search')['value'])) {
                     $searchValue = $request->input('search')['value'];

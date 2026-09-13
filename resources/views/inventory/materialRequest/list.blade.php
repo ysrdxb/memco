@@ -3,31 +3,30 @@
 
 @section('content')
 <div class="container-fluid">
-	<div class="page-header">
-		<div class="row align-items-end">
-			<div class="col-lg-8">
-				<div class="page-header-title">
-					<i class="ik ik-list bg-secondary"></i>
-					<div class="d-inline">
-						<h5>{{ __('Material Requisitions')}}</h5>
-						<span>{{ __('List of Material Requisitions from Main Store')}}</span>
-					</div>
-				</div>
-			</div>
-            <div class="col-lg-4 text-right">
-                <a href="{{ route('materialRequest.create') }}" class="btn btn-sm btn-danger"><i class="ik ik-plus"></i>Create</a>
-                <a href="{{ url()->previous() }}" class="btn btn-secondary ml-4"><span class="ik ik-arrow-left"></span> Back</a>
+	<!-- Header Banner -->
+    <div class="header-dashboard-clean">
+        <div class="d-flex align-items-center mb-3 mb-md-0">
+            <div class="header-icon-box-clean">
+                <i class="ik ik-list"></i>
             </div>
-		</div>
-	</div>
+            <div>
+                <h3 class="header-title-text-clean">{{ __('Material Requisitions')}}</h3>
+                <p class="header-sub-text-clean">{{ __('List of Material Requisitions from Main Store')}}</p>
+            </div>
+        </div>
+        <div class="d-flex align-items-center" style="gap: 12px;">
+            <a href="{{ route('materialRequest.create') }}" class="btn btn-sm btn-primary-memco-memco"><i class="ik ik-plus"></i>Create</a>
+                <a href="{{ url()->previous() }}" class="btn btn-secondary-memco ml-4"><span class="ik ik-arrow-left"></span> Back</a>
+        </div>
+    </div>
 
     <div class="row">
 		@include('include.message')
 		<div class="col-md-12">
-			<div class="card p-3">
+			<div class="table-card">
 				<div class="card-header"><h3>{{ __('Material Requisitions')}}</h3></div>
 				<div class="card-body">
-					<table id="_dataTable" class="table table-bordered">
+					<table id="_dataTable" class="table table-custom">
 						<thead>
 							<tr>
 								<th class="nosort text-center">#</th>
@@ -104,7 +103,7 @@
             buttons: [
                 {
                     extend: 'copy',
-                    className: 'btn-sm btn-info',
+                    className: 'btn',
                     title: 'Material Requests',
                     header: false,
                     footer: true,
@@ -114,7 +113,7 @@
                 },
                 {
                     extend: 'csv',
-                    className: 'btn-sm btn-success',
+                    className: 'btn',
                     title: 'Products',
                     header: false,
                     footer: true,
@@ -124,7 +123,7 @@
                 },
                 {
                     extend: 'excel',
-                    className: 'btn-sm btn-warning',
+                    className: 'btn',
                     title: 'Products',
                     header: false,
                     footer: true,
@@ -134,7 +133,7 @@
                 },
                 {
                     extend: 'pdf',
-                    className: 'btn-sm btn-primary',
+                    className: 'btn',
                     title: 'Products',
                     pageSize: 'A2',
                     header: false,
@@ -145,7 +144,7 @@
                 },
                 {
                     extend: 'print',
-                    className: 'btn-sm btn-default',
+                    className: 'btn',
                     title: 'Products',
                     // orientation:'landscape',
                     pageSize: 'A2',
